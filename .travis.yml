@@ -7,18 +7,18 @@ php:
   - 5.6
   - 7.0
   
-sudo: false  
+sudo: false
   
 before_install:
-  - composer selfupdate
+  - composer self-update
 
-install: 
-  - composer update
-    
+install:
+  - if [ "$TRAVIS_PHP_VERSION" == "5.3" ]; then echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi;
+  - composer update --no-interaction $COMPOSER_FLAGS
+
 script:
   - phpunit
 
 notifications:
   email:
     - leonardo.proietti@gmail.com
-
