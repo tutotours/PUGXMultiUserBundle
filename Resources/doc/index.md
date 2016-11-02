@@ -1,17 +1,17 @@
 PUGXMultiUserBundle Documentation
-==================================
+=================================
 
 PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
 In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
-This bundle has been realized as a part of a real application that uses doctrine orm,
+This bundle has been realized as a part of a real application that uses Doctrine ORM,
 so for now it only supports the ORM db driver.
 
 ## Prerequisites
 
-This version of the bundle requires Symfony dev-master and FOSUserBundle dev-master
+This version of the bundle requires Symfony (any version) and FOSUserBundle dev-master
 
 [FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSUserBundle)
 

@@ -6,22 +6,22 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('pugx_multi_user');
 
-        $supportedDrivers = array('orm');
-        
+        $supportedDrivers = ['orm'];
+
         $rootNode->
             children()
                 ->scalarNode('db_driver')
@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
                     ->end()
                 ->end();
-        
+
         $rootNode->
                 children()
                     ->arrayNode('users')->prototype('array')
@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('class')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('factory')->defaultValue('PUGX\MultiUserBundle\Model\UserFactory')->end()
-                                ->end()              
+                                ->end()
                             ->end()
                         ->end()
                         ->children()
@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode('name')->defaultValue('fos_user_registration_form')->end()
                                             ->arrayNode('validation_groups')
                                                 ->prototype('scalar')->end()
-                                                ->defaultValue(array('Registration', 'Default'))
+                                                ->defaultValue(['Registration', 'Default'])
                                             ->end()
                                         ->end()
                                     ->end()
@@ -73,7 +73,7 @@ class Configuration implements ConfigurationInterface
                                             ->scalarNode('name')->defaultValue('fos_user_profile_form')->end()
                                             ->arrayNode('validation_groups')
                                                 ->prototype('scalar')->end()
-                                                ->defaultValue(array('Profile', 'Default'))
+                                                ->defaultValue(['Profile', 'Default'])
                                             ->end()
                                         ->end()
                                     ->end()
@@ -81,11 +81,11 @@ class Configuration implements ConfigurationInterface
                                  ->end()
                             ->end()
                         ->end()
-                        
+
                     ->end()
                 ->end()
                 ->end();
-        
+
         return $treeBuilder;
     }
 }

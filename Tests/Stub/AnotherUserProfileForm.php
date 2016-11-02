@@ -6,6 +6,6 @@ class AnotherUserProfileForm
 {
     public function getName()
     {
-        return "form_name";
+        return 'form_name';
     }
 }

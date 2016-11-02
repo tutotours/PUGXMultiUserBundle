@@ -10,7 +10,7 @@ use FOS\UserBundle\Util\PasswordUpdaterInterface;
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
 
 /**
- * Custom user manager for FOSUserBundle
+ * Custom user manager for FOSUserBundle.
  *
  * @author leonardo proietti (leonardo.proietti@gmail.com)
  * @author eux (eugenio@netmeans.net)
@@ -18,13 +18,11 @@ use PUGX\MultiUserBundle\Model\UserDiscriminator;
 class UserManager extends BaseUserManager
 {
     /**
-     *
      * @var ObjectManager
      */
     protected $om;
 
     /**
-     *
      * @var UserDiscriminator
      */
     protected $userDiscriminator;
@@ -33,10 +31,10 @@ class UserManager extends BaseUserManager
      * Constructor.
      *
      * @param PasswordUpdaterInterface $passwordUpdater
-     * @param CanonicalFieldsUpdater  $canonicalFieldsUpdater
-     * @param ObjectManager           $om
-     * @param string                  $class
-     * @param UserDiscriminator       $userDiscriminator
+     * @param CanonicalFieldsUpdater   $canonicalFieldsUpdater
+     * @param ObjectManager            $om
+     * @param string                   $class
+     * @param UserDiscriminator        $userDiscriminator
      */
     public function __construct(PasswordUpdaterInterface $passwordUpdater, CanonicalFieldsUpdater $canonicalFieldsUpdater, ObjectManager $om, $class, UserDiscriminator $userDiscriminator)
     {
@@ -47,8 +45,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createUser()
     {
@@ -56,7 +53,7 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getClass()
     {
@@ -64,14 +61,13 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUserBy(array $criteria)
     {
         $classes = $this->userDiscriminator->getClasses();
 
         foreach ($classes as $class) {
-
             $repo = $this->om->getRepository($class);
 
             if (!$repo) {
@@ -87,6 +83,7 @@ class UserManager extends BaseUserManager
 
             if ($user) {
                 $this->userDiscriminator->setClass($class);
+
                 return $user;
             }
         }
@@ -95,13 +92,13 @@ class UserManager extends BaseUserManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findUsers()
     {
         $classes = $this->userDiscriminator->getClasses();
 
-        $usersAll = array();
+        $usersAll = [];
         foreach ($classes as $class) {
             $repo = $this->om->getRepository($class);
 
@@ -115,16 +112,14 @@ class UserManager extends BaseUserManager
         return $usersAll;
     }
 
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function findConflictualUsers($value, array $fields)
     {
         $classes = $this->userDiscriminator->getClasses();
 
         foreach ($classes as $class) {
-
             $repo = $this->om->getRepository($class);
 
             $users = $repo->findBy($this->getCriteria($value, $fields));
@@ -134,6 +129,6 @@ class UserManager extends BaseUserManager
             }
         }
 
-        return array();
+        return [];
     }
 }

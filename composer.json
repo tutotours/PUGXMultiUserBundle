@@ -2,7 +2,7 @@
     "name": "pugx/multi-user-bundle",
     "type": "symfony-bundle",
     "description": "Symfony PUGXMultiUserBundle",
-    "keywords": ["user management multi user management"],
+    "keywords": ["user management", "multi user management"],
     "homepage": "https://github.com/PUGX",
     "license": "MIT",
     "authors": [
@@ -27,9 +27,8 @@
     "suggest": {
     },
     "autoload": {
-        "psr-0": { "PUGX\\MultiUserBundle": "" }
+        "psr-4": { "PUGX\\MultiUserBundle\\": "" }
     },
-    "target-dir": "PUGX/MultiUserBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"

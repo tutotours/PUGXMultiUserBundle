@@ -14,13 +14,11 @@ use Symfony\Component\Security\Http\SecurityEvents;
 class AuthenticationListener implements EventSubscriberInterface
 {
     /**
-     *
      * @var UserDiscriminator
      */
     protected $userDiscriminator;
 
     /**
-     *
      * @param UserDiscriminator $controllerHandler
      */
     public function __construct(UserDiscriminator $userDiscriminator)
@@ -29,16 +27,15 @@ class AuthenticationListener implements EventSubscriberInterface
     }
 
     /**
-     *
      * @return array
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FOSUserEvents::SECURITY_IMPLICIT_LOGIN => 'onSecurityImplicitLogin',
             SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-            SecurityEvents::SWITCH_USER => 'onSecuritySwitchUser'
-        );
+            SecurityEvents::SWITCH_USER => 'onSecuritySwitchUser',
+        ];
     }
 
     protected function discriminate($user)
@@ -48,7 +45,6 @@ class AuthenticationListener implements EventSubscriberInterface
     }
 
     /**
-     *
      * @param \FOS\UserBundle\Event\UserEvent $event
      */
     public function onSecurityImplicitLogin(UserEvent $event)
@@ -57,7 +53,6 @@ class AuthenticationListener implements EventSubscriberInterface
     }
 
     /**
-     *
      * @param \Symfony\Component\Security\Http\Event\InteractiveLoginEvent $event
      */
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
@@ -66,7 +61,6 @@ class AuthenticationListener implements EventSubscriberInterface
     }
 
     /**
-     *
      * @param \Symfony\Component\Security\Http\Event\SwitchUserEvent $event
      */
     public function onSecuritySwitchUser(SwitchUserEvent $event)

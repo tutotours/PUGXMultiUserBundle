@@ -65,7 +65,6 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->request));
     }
 
-
     public function testRegisterReturnRedirectResponse()
     {
         $this->common();
@@ -111,7 +110,7 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->twig
                 ->expects($this->exactly(1))
                 ->method('renderResponse')
-                ->with('FOSUserBundle:Registration:register.html.twig', array('form' => $this->formView));
+                ->with('FOSUserBundle:Registration:register.html.twig', ['form' => $this->formView]);
 
         $this->form
                 ->expects($this->exactly(1))
@@ -151,7 +150,7 @@ class RegistrationManagerTest extends \PHPUnit_Framework_TestCase
         $this->twig
                 ->expects($this->exactly(1))
                 ->method('renderResponse')
-                ->with('PUGXMultiUserBundle:Registration:register.html.twig', array('form' => $this->formView));
+                ->with('PUGXMultiUserBundle:Registration:register.html.twig', ['form' => $this->formView]);
 
         $this->form
                 ->expects($this->exactly(1))
