@@ -1,8 +1,8 @@
 PUGXMultiUserBundle Documentation
 =================================
 
-PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
-In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
+PUGXMultiUserBundle came by the need to use different types of users using only one `fos_user` service.
+In practice it is an addon, that forces FOSUserBundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
@@ -159,9 +159,9 @@ see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfon
 
 ### 4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 
-Keep in mind that PUGXMultiUserBundle overwrites user_class via UserDiscriminator
+Keep in mind that PUGXMultiUserBundle overwrites `user_class` via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
-it still uses the user_class configured in the config.
+it still uses the `user_class` configured in the config.
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -174,13 +174,13 @@ fos_user:
 ```
 
 **Note:**
-> Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
+> `Acme\UserBundle\Entity\User` must be an abstract class, because you don't have to use it.
 In fact is the discriminator that has responsibility to get the user class depending on context.
 
 ### 5. Configure the PUGXMultiUserBundle
 
 ``` yaml
-# Acme/UserBundle/Resources/config/config.yml
+# app/config/config.yml
 
 pugx_multi_user:
   users:
@@ -217,7 +217,7 @@ pugx_multi_user:
 #### Route configuration
 
 ``` yaml
-# Acme/UserBundle/Resources/config/routing.yml
+# app/config/routing.yml
 
 user_one_registration:
     path:  /register/user-one
