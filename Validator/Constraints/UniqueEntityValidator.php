@@ -3,11 +3,9 @@
 namespace PUGX\MultiUserBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator as BaseValidator;
 
 class UniqueEntityValidator extends BaseValidator
@@ -33,7 +31,7 @@ class UniqueEntityValidator extends BaseValidator
     {
         $violations = $this->context->getViolations();
         foreach ($violations as $violation) {
-            if ($violation->getPropertyPath() == 'data.' . $constraint->fields) {
+            if ($violation->getPropertyPath() == 'data.'.$constraint->fields) {
                 return;
             }
         }
@@ -62,10 +60,10 @@ class UniqueEntityValidator extends BaseValidator
         $class = $em->getClassMetadata($constraint->targetClass);
         /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
 
-        $criteria = array();
+        $criteria = [];
         foreach ($fields as $fieldName) {
             if (!$class->hasField($fieldName) && !$class->hasAssociation($fieldName)) {
-                throw new ConstraintDefinitionException("Only field names mapped by Doctrine can be validated for uniqueness.");
+                throw new ConstraintDefinitionException('Only field names mapped by Doctrine can be validated for uniqueness.');
             }
 
             $criteria[$fieldName] = $class->reflFields[$fieldName]->getValue($entity);
@@ -86,8 +84,8 @@ class UniqueEntityValidator extends BaseValidator
 
                 if (count($relatedId) > 1) {
                     throw new ConstraintDefinitionException(
-                        "Associated entities are not allowed to have more than one identifier field to be " .
-                            "part of a unique constraint in: " . $class->getName() . "#" . $fieldName
+                        'Associated entities are not allowed to have more than one identifier field to be '.
+                            'part of a unique constraint in: '.$class->getName().'#'.$fieldName
                     );
                 }
                 $criteria[$fieldName] = array_pop($relatedId);
@@ -115,10 +113,13 @@ class UniqueEntityValidator extends BaseValidator
 
         $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
 
-        if (Kernel::MINOR_VERSION > 2) {
-            $this->context->addViolationAt($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
+        if (\Symfony\Component\HttpKernel\Kernel::MAJOR_VERSION >= 3) {
+            $this->context->buildViolation($constraint->message)
+                ->atPath($errorPath)
+                ->setInvalidValue($criteria[$fields[0]])
+                ->addViolation();
         } else {
-            $this->context->addViolationAtSubPath($errorPath, $constraint->message, array(), $criteria[$fields[0]]);
+            $this->context->addViolationAt($errorPath, $constraint->message, [], $criteria[$fields[0]]);
         }
     }
 }

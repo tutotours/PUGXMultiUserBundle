@@ -1,22 +1,17 @@
 PUGXMultiUserBundle Documentation
-==================================
+=================================
 
-PUGXMultiUserBundle came by the need to use different types of users using only one fos_user service.
-In practice it is an hack that forces FOSUser bundle through custom UserManager, controllers, and forms handlers.
+PUGXMultiUserBundle came by the need to use different types of users using only one `fos_user` service.
+In practice it is an addon, that forces FOSUserBundle through custom UserManager, controllers, and forms handlers.
 
 It's just a lazy way to use for free most of the functionality of FOSUserBundle.
 
-This bundle has been realized as a part of a real application that uses doctrine orm,
+This bundle has been realized as a part of a real application that uses Doctrine ORM,
 so for now it only supports the ORM db driver.
-
-!!! IMPORTANT !!!
-=================
-This version was heavily modified because now FOSUserBundle uses events
-and so many classes introduced in previous refactoring are unnecessary
 
 ## Prerequisites
 
-This version of the bundle requires Symfony dev-master and FOSUserBundle dev-master
+This version of the bundle requires Symfony (any version) and FOSUserBundle dev-master
 
 [FOSUserBundle] (https://github.com/FriendsOfSymfony/FOSUserBundle)
 
@@ -30,6 +25,7 @@ This version of the bundle requires Symfony dev-master and FOSUserBundle dev-mas
 6. Create your controllers
 7. Using the User Manager
 
+
 ### 1. Download PUGXMultiUserBundle
 
 **Using composer**
@@ -39,8 +35,8 @@ Add the following lines in your composer.json:
 ```
 {
     "require": {
-		"friendsofsymfony/user-bundle": "2.0.*@dev",
-        "pugx/multi-user-bundle": "2.0.*@dev"
+        "friendsofsymfony/user-bundle": "2.0.*@dev",
+        "pugx/multi-user-bundle": "3.0.*@dev"
     }
 }
 
@@ -55,7 +51,7 @@ $ php composer.phar update pugx/multi-user-bundle
 
 ### 2. Enable the bundle
 
-Enable the bundle in the kernel:
+Enable the bundles in the kernel:
 
 ``` php
 <?php
@@ -66,6 +62,7 @@ public function registerBundles()
     $bundles = array(
         // ...
         new PUGX\MultiUserBundle\PUGXMultiUserBundle(),
+        new FOS\UserBundle\FOSUserBundle(),
     );
 }
 ```
@@ -74,7 +71,7 @@ public function registerBundles()
 
 Create entities using Doctrine2 inheritance.
 
-Abstract User that directly extends FOS\UserBundle\Entity\User
+Abstract User that directly extends the model FOS\UserBundle\Model\User
 
 ``` php
 <?php
@@ -82,7 +79,7 @@ Abstract User that directly extends FOS\UserBundle\Entity\User
 namespace Acme\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Entity\User as BaseUser;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity
@@ -158,13 +155,13 @@ class UserTwo extends User
 ```
 
 You must also create forms for your entities:
-see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/1.1.0/Resources/doc/overriding_forms.md)
+see [Overriding Default FOSUserBundle Forms] (https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/overriding_forms.rst)
 
 ### 4. Configure the FOSUserBundle (PUGXMultiUserBundle params)
 
-Keep in mind that PUGXMultiUserBundle overwrites user_class via UserDiscriminator
+Keep in mind that PUGXMultiUserBundle overwrites `user_class` via UserDiscriminator
 but it does it only in controllers and forms handlers; in the other cases (command, sonata integration, etc)
-it still uses the user_class configured in the config.
+it still uses the `user_class` configured in the config.
 
 ``` yaml
 # Acme/UserBundle/Resources/config/config.yml
@@ -176,13 +173,14 @@ fos_user:
         user_manager: pugx_user_manager
 ```
 
-Acme\UserBundle\Entity\User must be an abstract class, because you don't have to use it.
+**Note:**
+> `Acme\UserBundle\Entity\User` must be an abstract class, because you don't have to use it.
 In fact is the discriminator that has responsibility to get the user class depending on context.
 
 ### 5. Configure the PUGXMultiUserBundle
 
 ``` yaml
-# Acme/UserBundle/Resources/config/config.yml
+# app/config/config.yml
 
 pugx_multi_user:
   users:
@@ -216,34 +214,35 @@ pugx_multi_user:
 
 ### 6. Create your controllers
 
-Route configuration
+#### Route configuration
 
 ``` yaml
-# Acme/UserBundle/Resources/config/routing.yml
+# app/config/routing.yml
 
 user_one_registration:
-    pattern:  /register/user-one
+    path:  /register/user-one
     defaults: { _controller: AcmeUserBundle:RegistrationUserOne:register }
 
 user_two_registration:
-    pattern:  /register/user-two
+    path:  /register/user-two
     defaults: { _controller: AcmeUserBundle:RegistrationUserTwo:register }
 ```
 
-You can disable the default route registration coming from FOSUser or you have to manage it for prevent incorrect registration
+**Note:**
+> You have to disable the default route registration coming from FOSUser or you have to manage it for prevent incorrect registration 
 
-Controller
+#### Controllers
 
-RegistrationUserOne
+RegistrationUserOneController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserOne extends BaseController
+class RegistrationUserOneController extends Controller
 {
     public function registerAction()
     {
@@ -254,16 +253,16 @@ class RegistrationUserOne extends BaseController
 }
 ```
 
-RegistrationUserTwo
+RegistrationUserTwoController
 
 ``` php
 <?php
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RegistrationUserTwo extends BaseController
+class RegistrationUserTwoController extends Controller
 {
     public function registerAction()
     {
@@ -274,7 +273,31 @@ class RegistrationUserTwo extends BaseController
 }
 ```
 
-For now only registration and profile form factories are wrapped; 
+
+**Note:**
+
+> Remember to create the templates for registration form with correct routes
+
+something like this, if you are extending fosub
+
+```
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block fos_user_content %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <form action="{{ path('user_one_registration') }}" {{ form_enctype(form) }} method="POST">
+        {{ form_widget(form) }}
+        <div>
+            <input type="submit" value="{{ 'registration.submit'|trans }}" />
+        </div>
+    </form>
+{% endblock fos_user_content %}
+```
+
+**Note:**
+
+> For now only registration and profile form factories are wrapped; 
 if you need creat a custom FormType you have to inject the discriminator.
 
 ### 7. Using the User Manager

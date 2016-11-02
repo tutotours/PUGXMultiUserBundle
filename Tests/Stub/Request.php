@@ -8,6 +8,5 @@ class Request extends BaseRequest
 {
     public function __clone()
     {
-        
     }
 }

@@ -5,7 +5,7 @@ namespace PUGX\MultiUserBundle\Model;
 interface UserFactoryInterface
 {
     /**
-     * @param string $class 
+     * @param string $class
      */
-    static function build($class);
+    public static function build($class);
 }

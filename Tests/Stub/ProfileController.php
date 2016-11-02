@@ -6,5 +6,4 @@ use FOS\UserBundle\Controller\ProfileController as BaseController;
 
 class ProfileController extends BaseController
 {
-    
 }
