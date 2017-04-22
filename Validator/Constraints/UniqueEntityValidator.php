@@ -3,10 +3,10 @@
 namespace PUGX\MultiUserBundle\Validator\Constraints;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator as BaseValidator;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class UniqueEntityValidator extends BaseValidator
 {

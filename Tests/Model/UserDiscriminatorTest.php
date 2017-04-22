@@ -3,8 +3,8 @@
 namespace PUGX\MultiUserBundle\Tests\Model;
 
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
-use PUGX\MultiUserBundle\Tests\Stub\User;
 use PUGX\MultiUserBundle\Tests\Stub\AnotherUser;
+use PUGX\MultiUserBundle\Tests\Stub\User;
 
 class UserDiscriminatorTest extends \PHPUnit_Framework_TestCase
 {

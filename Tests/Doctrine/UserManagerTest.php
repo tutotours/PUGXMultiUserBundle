@@ -25,20 +25,12 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $this->metaData = $this->getMockBuilder('Doctrine\Common\Persistence\Mapping\ClassMetadata')
                 ->disableOriginalConstructor()->getMock();
 
-        $this->om->expects($this->exactly(1))->method('getClassMetadata')
-                ->with($this->class)
-                ->will($this->returnValue($this->metaData));
-
-        $this->metaData->expects($this->exactly(1))->method('getName')
-                ->will($this->returnValue($this->class));
-        //end parent
-
         $this->userManager = new UserManager($this->passwordUpdater, $this->fieldsUpdater, $this->om, $this->class, $this->userDiscriminator);
     }
 
     public function testGetClass()
     {
-        $this->userDiscriminator->expects($this->exactly(1))->method('getClass')->will($this->returnValue('Acme\UserBundle\MyUser'));
+        $this->userDiscriminator->expects($this->once())->method('getClass')->will($this->returnValue('Acme\UserBundle\MyUser'));
         $result = $this->userManager->getClass();
         $this->assertEquals('Acme\UserBundle\MyUser', $result);
     }

@@ -2,9 +2,9 @@
 
 namespace PUGX\MultiUserBundle\Form;
 
+use FOS\UserBundle\Form\Factory\FactoryInterface;
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\Form\FormFactoryInterface;
-use FOS\UserBundle\Form\Factory\FactoryInterface;
 
 class FormFactory implements FactoryInterface
 {
