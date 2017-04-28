@@ -30,22 +30,8 @@ This version of the bundle requires Symfony (any version) and FOSUserBundle dev-
 
 **Using composer**
 
-Add the following lines in your composer.json:
-
-```
-{
-    "require": {
-        "friendsofsymfony/user-bundle": "2.0.*@dev",
-        "pugx/multi-user-bundle": "3.0.*@dev"
-    }
-}
-
-```
-
-Now, run the composer to download the bundle:
-
 ``` bash
-$ php composer.phar update pugx/multi-user-bundle
+$ php composer.phar require pugx/multi-user-bundle
 ```
 
 
