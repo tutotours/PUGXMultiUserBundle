@@ -5,7 +5,7 @@ namespace PUGX\MultiUserBundle\Controller;
 use PUGX\MultiUserBundle\Model\UserDiscriminator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use FOS\UserBundle\Controller\RegistrationController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use PUGX\MultiUserBundle\Form\FormFactory;
 
 class RegistrationManager
@@ -50,14 +50,14 @@ class RegistrationManager
     /**
      * @param string $class
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function register($class)
     {
         $this->userDiscriminator->setClass($class);
         $this->controller->setContainer($this->container);
         $result = $this->controller->registerAction($this->getRequest());
-        if ($result instanceof RedirectResponse) {
+        if ($result instanceof Response) {
             return $result;
         }
 
